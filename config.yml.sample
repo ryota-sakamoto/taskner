@@ -1,15 +1,15 @@
 before:
-  - echo before
+  - rustc -O -o ./a.out ./main.rs
 
 after:
-  - echo after
+  - rm a.out
 
 watch:
-  - main.py
+  - main.rs
   - test.txt
 
 jobs:
-  - command: python3 main.py
+  - command: ./a.out
     stdin_from_file: test.txt
 
 job:
