@@ -13,4 +13,4 @@ jobs:
     stdin_from_file: test.txt
 
 job:
-  timeout: 2s
+  timeout: 2000ms

@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	"time"
 )
 
 type Job struct {
@@ -15,10 +14,7 @@ type Job struct {
 }
 
 func (j *Job) Run(ctx context.Context) ([]byte, error) {
-	timeout_ctx, cancel := context.WithTimeout(ctx, time.Second*2)
-	defer cancel()
-
-	cmd := j.Command.build(timeout_ctx)
+	cmd := j.Command.build(ctx)
 
 	if j.StdinFile != "" {
 		stdin, _ := cmd.StdinPipe()

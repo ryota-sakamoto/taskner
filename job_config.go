@@ -4,6 +4,8 @@ import (
 	"io/ioutil"
 	"os"
 
+	"time"
+
 	"gopkg.in/yaml.v2"
 )
 
@@ -12,6 +14,11 @@ type JobConfig struct {
 	AfterScript  []Command
 	WatchFiles   []string
 	Jobs         []Job
+	JobSetting   JobSetting
+}
+
+type JobSetting struct {
+	Timeout time.Duration
 }
 
 func read(file_name string) (*JobConfig, error) {
@@ -36,6 +43,7 @@ func read(file_name string) (*JobConfig, error) {
 	after := []Command{}
 	watch_files := []string{}
 	jobs := []Job{}
+	job_setting := JobSetting{}
 
 	if l, ok := m["before"]; ok {
 		re, ok := l.([]interface{})
@@ -80,11 +88,28 @@ func read(file_name string) (*JobConfig, error) {
 		}
 	}
 
+	if l, ok := m["job"]; ok {
+		re, ok := l.(interface{})
+		if ok {
+			re := re.(map[interface{}]interface{})
+
+			if timeout, ok := re["timeout"].(string); ok {
+				t, err := time.ParseDuration(timeout)
+				if err != nil {
+					job_setting.Timeout = time.Second * 2
+				} else {
+					job_setting.Timeout = t
+				}
+			}
+		}
+	}
+
 	j := JobConfig{
 		BeforeScript: before,
 		AfterScript:  after,
 		WatchFiles:   watch_files,
 		Jobs:         jobs,
+		JobSetting:   job_setting,
 	}
 
 	return &j, nil

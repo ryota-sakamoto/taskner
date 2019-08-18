@@ -58,7 +58,7 @@ func (j *JobRunner) executeScript(done chan struct{}) {
 
 	j.logger.Printf("[JOB] start")
 	for _, job := range j.conf.Jobs {
-		job_ctx, _ := context.WithCancel(ctx)
+		job_ctx, _ := context.WithTimeout(ctx, j.conf.JobSetting.Timeout)
 
 		start := time.Now()
 		b, err := job.Run(job_ctx)
@@ -68,6 +68,7 @@ func (j *JobRunner) executeScript(done chan struct{}) {
 
 		if err != nil {
 			j.logger.Printf("[JOB] error: %+v", string(b))
+			j.logger.Printf("[JOB] error: %+v", err)
 		} else {
 			j.logger.Printf("[JOB] output: %+v", string(b))
 		}
