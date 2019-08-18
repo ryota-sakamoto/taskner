@@ -1,0 +1,16 @@
+before:
+  - echo before
+
+after:
+  - echo after
+
+watch:
+  - main.py
+  - test.txt
+
+jobs:
+  - command: python3 main.py
+    stdin_from_file: test.txt
+
+job:
+  timeout: 2s
