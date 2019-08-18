@@ -29,7 +29,7 @@ func (j *Job) Run(ctx context.Context) ([]byte, error) {
 		stdin.Close()
 	}
 
-	return cmd.Output()
+	return cmd.CombinedOutput()
 }
 
 type Command struct {
@@ -43,6 +43,10 @@ func getCommand(s string) Command {
 		command: cs[0],
 		args:    cs[1:],
 	}
+}
+
+func (c *Command) Run() ([]byte, error) {
+	return c.build(context.Background()).CombinedOutput()
 }
 
 func (c *Command) build(ctx context.Context) *exec.Cmd {

@@ -47,9 +47,9 @@ func (j *JobRunner) executeScript(done chan struct{}) {
 
 	j.logger.Printf("[BEFORE] start")
 	for _, c := range j.conf.BeforeScript {
-		err := c.build(context.Background()).Run()
+		b, err := c.Run()
 		if err != nil {
-			j.logger.Printf("[BEFORE] error: %+v", err)
+			j.logger.Printf("[BEFORE] error: %+v", string(b))
 			return
 		}
 	}
@@ -67,7 +67,7 @@ func (j *JobRunner) executeScript(done chan struct{}) {
 		j.logger.Printf("[JOB] time: %+v", end.Sub(start))
 
 		if err != nil {
-			j.logger.Printf("[JOB] error: %+v", err)
+			j.logger.Printf("[JOB] error: %+v", string(b))
 		} else {
 			j.logger.Printf("[JOB] output: %+v", string(b))
 		}
@@ -75,9 +75,9 @@ func (j *JobRunner) executeScript(done chan struct{}) {
 
 	j.logger.Printf("[AFTER] start")
 	for _, c := range j.conf.AfterScript {
-		err := c.build(context.Background()).Run()
+		b, err := c.Run()
 		if err != nil {
-			j.logger.Printf("[AFTER] error: %+v", err)
+			j.logger.Printf("[AFTER] error: %+v", string(b))
 			return
 		}
 	}
