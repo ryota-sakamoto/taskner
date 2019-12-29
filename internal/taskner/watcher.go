@@ -1,26 +1,11 @@
-package main
+package taskner
 
 import (
-	"os"
-
 	"github.com/fsnotify/fsnotify"
 	"github.com/urfave/cli"
 )
 
-func main() {
-	app := cli.NewApp()
-	app.Flags = []cli.Flag{
-		cli.StringFlag{
-			Name:  "config, c",
-			Value: "config.yml",
-			Usage: "job config file path",
-		},
-	}
-	app.Action = start
-	app.Run(os.Args)
-}
-
-func start(c *cli.Context) error {
+func WatchStart(c *cli.Context) error {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		panic(err)

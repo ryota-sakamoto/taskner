@@ -1,4 +1,4 @@
-package main
+package taskner
 
 import (
 	"io/ioutil"
