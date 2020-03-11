@@ -3,7 +3,7 @@ module github.com/ryota-sakamoto/taskner
 go 1.12
 
 require (
-	github.com/fsnotify/fsnotify v1.4.7
+	github.com/fsnotify/fsnotify v1.4.8
 	github.com/urfave/cli v1.22.3
 	golang.org/x/sys v0.0.0-20190813064441-fde4db37ae7a // indirect
 	gopkg.in/fsnotify.v1 v1.4.7
